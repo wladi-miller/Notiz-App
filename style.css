@@ -1,9 +1,24 @@
+.app-container {
+  display: flex;
+  height: 100vh;
+  background: #f5f6fb;
+}
 .sidebar {
-  flex: 0 0 20rem; /* feste Breite in rem */
-  min-width: 16rem;
-  background: #fff;
-  border-right: 0.0625rem solid #e6e8f0;
+  width: 20rem; /* 320px → rem */
+  min-width: 16.25rem; /* 260px → rem */
+  background: #ffffff;
+  border-right: 0.0625rem solid #e6e8f0; /* 1px → rem */
   display: flex;
   flex-direction: column;
-  padding: 0.5rem;
+  box-shadow: 0.125rem 0 0.625rem rgba(12, 20, 40, 0.03); /* 2px 0 10px */
+  z-index: 2;
+}
+.sidebar-header {
+  padding: 1.125rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+}
+.sidebar-header h2 {
+  font-size: 1.25rem;
+  margin: 0;
 }
