@@ -1,0 +1,9 @@
+.sidebar {
+  flex: 0 0 20rem; /* feste Breite in rem */
+  min-width: 16rem;
+  background: #fff;
+  border-right: 0.0625rem solid #e6e8f0;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+}

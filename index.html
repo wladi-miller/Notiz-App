@@ -4,16 +4,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Notiz-App</title>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="container">
-      <h1>📝 Meine Notizen</h1>
+    <div class="app-container">
+      <!-- sidebar -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <h2>Notizen</h2>
+        </div>
+        <div id="notesList" class="notes-list">
+          <p class="empty-message">Keine Notizen vorhanden</p>
+        </div>
+      </aside>
+      <div class="container">
+        <h1>📝 Meine Notizen</h1>
 
-      <!-- Eingabebereich -->
-      <div class="input-area">
-        <input type="text" id="titleInput" placeholder="Titel der Notiz..." />
-        <textarea id="contentInput" placeholder="Inhalt der Notiz..."></textarea>
-    <button id="addBtn">Notize speichern</button>
+        <!-- Eingabebereich -->
+        <div class="input-area">
+          <input type="text" id="titleInput" placeholder="Titel der Notiz..." />
+          <textarea
+            id="contentInput"
+            placeholder="Inhalt der Notiz..."
+          ></textarea>
+          <button id="addBtn">Notize speichern</button>
+        </div>
+        <!-- Notizliste -->
+        <div class="notes-list" id="notesList"></div>
+      </div>
     </div>
+    <script src="script.js"></script>
   </body>
 </html>
