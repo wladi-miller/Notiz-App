@@ -1,94 +1,19 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Notiz App</title>
-    <link rel="stylesheet" href="style.css" />
+    <title>Notiz-App</title>
   </head>
   <body>
-    <div class="app-container">
-      <aside class="sidebar">
-        <div class="sidebar-header">
-          <h2>📝 Notizen</h2>
-        </div>
+    <div class="container">
+      <h1>📝 Meine Notizen</h1>
 
-        <div class="search-box">
-          <input
-            type="text"
-            id="searchInput"
-            placeholder="🔍 Suchen..."
-            class="search-input"
-          />
-        </div>
-
-        <div class="sort-box">
-          <select id="sortSelect" class="sort-select">
-            <option value="newest">Neueste zuerst</option>
-            <option value="oldest">Älteste zuerst</option>
-            <option value="title">Nach Titel A-Z</option>
-          </select>
-        </div>
-
-        <div id="notesList" class="notes-list">
-          <p class="empty-message">Keine Notizen vorhanden</p>
-        </div>
-      </aside>
-
-      <main class="main-content">
-        <header class="app-header">
-          <h1>📝 Notiz App</h1>
-          <p class="subtitle">Deine persönliche Notizenverwaltung</p>
-        </header>
-        <div class="input-section">
-          <input
-            type="text"
-            id="titleInput"
-            placeholder="Titel der Notiz..."
-            class="input-title"
-          />
-          <textarea
-            id="noteInput"
-            placeholder="Schreibe deine Notiz hier..."
-            class="textarea-note"
-          ></textarea>
-          <button id="addBtn" class="btn btn-primary">+ Notiz erstellen</button>
-        </div>
-
-        <section id="selectedNote" class="selected-note">
-          <p class="empty-message">
-            Wähle eine Notiz aus der Sidebar oder erstelle eine neue.
-          </p>
-        </section>
-      </main>
+      <!-- Eingabebereich -->
+      <div class="input-area">
+        <input type="text" id="titleInput" placeholder="Titel der Notiz..." />
+        <textarea id="contentInput" placeholder="Inhalt der Notiz..."></textarea>
+    <button id="addBtn">Notize speichern</button>
     </div>
-
-    <div id="modalEdit" class="modal">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h2>Notiz bearbeiten</h2>
-          <span class="close">&times;</span>
-        </div>
-        <input
-          type="text"
-          id="editTitle"
-          class="modal-input"
-          placeholder="Titel"
-        />
-        <textarea
-          id="editText"
-          class="modal-textarea"
-          placeholder="Notiztext"
-        ></textarea>
-        <div class="modal-buttons">
-          <button id="saveEditBtn" class="btn btn-primary">Speichern</button>
-          <button id="cancelEditBtn" class="btn btn-secondary">
-            Abbrechen
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <script src="script.js"></script>
   </body>
 </html>
