@@ -1,37 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Notiz-App</title>
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <div class="app-container">
-      <aside class="sidebar">
+      <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-          <h2>Notizen</h2>
+          <button id="addBtn">Neue Notiz erstellen</button>
+          <br />
+          <h2>📝 Meine Notizen</h2>
         </div>
-        <div id="notesList" class="notes-list">
+        <div id="sidebarNotesList" class="notes-list">
           <p class="empty-message">Keine Notizen vorhanden</p>
         </div>
       </aside>
-      <div class="container">
-        <h1>📝 Meine Notizen</h1>
 
-        <!-- Eingabebereich -->
-        <div class="input-area">
-          <input type="text" id="titleInput" placeholder="Titel der Notiz..." />
-          <textarea
-            id="contentInput"
-            placeholder="Inhalt der Notiz..."
-          ></textarea>
-          <button id="addBtn">Notize speichern</button>
+      <div class="container">
+        <div class="input-group">
+          <input
+            type="text"
+            id="noteTitle"
+            class="input-title"
+            placeholder="Titel der Notiz"
+          />
+          <button id="saveBtn" class="btn btn-save" title="Speichern">
+            💾
+          </button>
+          <button id="deleteBtn" class="btn btn-delete" title="Löschen">
+            🗑️
+          </button>
         </div>
-        <!-- Notizliste -->
-        <div class="notes-list" id="notesList"></div>
+        <textarea
+          id="noteContent"
+          class="note-content"
+          placeholder="Inhalt der Notiz"
+        ></textarea>
       </div>
     </div>
+
     <script src="script.js"></script>
   </body>
 </html>
