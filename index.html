@@ -10,7 +10,7 @@
     <div class="app-container">
       <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-          <button id="addBtn">Neue Notiz erstellen</button>
+          <button onclick="NewNote()">Neue Notiz erstellen</button>
           <br />
           <h2>📝 Meine Notizen</h2>
         </div>
@@ -27,10 +27,14 @@
             class="input-title"
             placeholder="Titel der Notiz"
           />
-          <button id="saveBtn" class="btn btn-save" title="Speichern">
+          <button onclick="SaveNotes()" class="btn btn-save" title="Speichern">
             💾
           </button>
-          <button id="deleteBtn" class="btn btn-delete" title="Löschen">
+          <button
+            onclick="DeleteNotes()"
+            class="btn btn-delete"
+            title="Löschen"
+          >
             🗑️
           </button>
         </div>

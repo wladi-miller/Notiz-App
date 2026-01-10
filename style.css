@@ -67,15 +67,7 @@ body {
   width: 100%;
 }
 
-.sidebar-header h2 {
-  font-size: 1.125rem;
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Notes list (used both in sidebar & main) */
+/*   Sidebar  */
 .notes-list {
   padding: 0.75rem;
   overflow: auto;
@@ -83,25 +75,27 @@ body {
 }
 
 .note-item {
-  background: #fafafa;
-  border: 1px solid #eef0f6;
-  padding: 0.75rem;
-  margin-bottom: 0.5rem;
+  padding: 10px;
+  border: 0;
   border-radius: 6px;
+  border-bottom: 1px solid #ddd;
   cursor: pointer;
 }
-
-.note-item h4 {
-  margin: 0 0 0.25rem 0;
-  font-size: 0.95rem;
+.note-item:hover {
+  background: #f3f3f3;
 }
-.note-item p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.9rem;
-  max-height: 3.6rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
+
+.note-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+.note-preview {
+  font-size: 1rem;
+}
+.note-date {
+  font-size: 0.75em;
+  color: #999;
+  margin-top: 4px;
 }
 
 .container {

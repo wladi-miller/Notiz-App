@@ -1,213 +1,146 @@
-// ============ 1. DOM-ELEMENTE REFERENZIEREN ============
-// Das sind die Verbindungen zu den HTML-Elementen
-const titleInput = document.getElementById("titleInput");
-const contentInput = document.getElementById("contentInput");
-const addBtn = document.getElementById("addBtn");
-const sidebarNotesList = document.getElementById("sidebarNotesList");
-const selectedNoteDetail = document.getElementById("selectedNoteDetail");
-const selectedNoteContent = document.getElementById("selectedNoteContent");
-
-// ============ 2. DATENSPEICHER (Array für Notizen) ============
-// Hier speichern wir alle Notizen im RAM (und später im localStorage)
+// ============ variablen Deklaration ============
 let notes = [];
-let selectedNoteId = null; // Speichert, welche Notiz ausgewählt ist
+let activeNoteId = null;
 
-// ============ 3. BEIM LADEN: NOTIZEN AUS LOCALSTORAGE LADEN ============
+// ============ Hilfsfunktion Zeitstempel ============
+function formatDate(date) {
+  return new Date(date).toLocaleString("de-DE", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
+// ============ 1. Notizen aus dem lokalen Speicher laden ============
 document.addEventListener("DOMContentLoaded", () => {
-  loadNotes(); // Notizen aus localStorage laden
-  renderNotes(); // Notizen auf der Seite anzeigen
+  const savedNotes = localStorage.getItem("notes");
+
+  if (savedNotes) {
+    const parsedNotes = JSON.parse(savedNotes);
+
+    // Prüfen, ob es ein Array ist
+    if (Array.isArray(parsedNotes)) {
+      notes = parsedNotes;
+    } else {
+      notes = []; // falls es kein Array ist, leeres Array verwenden
+    }
+    renderNotesList();
+  }
 });
 
-// ============ 4. BUTTON-KLICK: NEUE NOTIZ HINZUFÜGEN ============
-addBtn.addEventListener("click", addNote);
+// ============ 2. Neue Notit erstellen ============
+function NewNote() {
+  activeNoteId = null;
+  document.getElementById("noteTitle").value = "";
+  document.getElementById("noteContent").value = "";
+}
 
-function addNote() {
-  // Schritt A: Werte aus Eingabefeldern auslesen
-  const title = titleInput.value.trim();
-  const content = contentInput.value.trim();
+// ============ 3. Notiz speichern ============
+function SaveNotes() {
+  const title = document.getElementById("noteTitle").value.trim();
+  const content = document.getElementById("noteContent").value.trim();
 
-  // Schritt B: Prüfen, ob mindestens etwas eingegeben wurde
-  if (!title && !content) {
-    alert("Bitte gib einen Titel oder Inhalt ein!");
-    return;
+  if (!title || !content) {
+    if (!title && !content) {
+      alert("Die Notiz ist leer 😅");
+      return;
+    }
+    if (!title) {
+      alert("Bitte Titel ergänzen 😅");
+      return;
+    }
+
+    if (!content) {
+      alert("Bitte Inhalt ergänzen 😅");
+      return;
+    }
   }
 
-  // Schritt C: Neue Notiz-Objekt erstellen
-  const newNote = {
-    id: Date.now(), // Eindeutige ID (Zeitstempel)
-    title: title || "Ohne Titel", // Fallback, falls kein Titel
-    content: content,
-    createdAt: new Date().toLocaleString("de-DE"), // Zeitstempel (deutsches Format)
-  };
+  if (activeNoteId) {
+    const note = notes.find((n) => n.id === activeNoteId);
+    note.title = title;
+    note.content = content;
+  } else {
+    const newNote = {
+      id: Date.now(),
+      title,
+      content,
+      createdAt: new Date(),
+    };
+    notes.push(newNote);
+    activeNoteId = newNote.id;
+  }
 
-  // Schritt D: Notiz zum Array hinzufügen (am Anfang = unshift)
-  notes.unshift(newNote);
-
-  // Schritt E: In localStorage speichern
-  saveNotes();
-
-  // Schritt F: Eingabefelder leeren
-  titleInput.value = "";
-  contentInput.value = "";
-  titleInput.focus();
-
-  // Schritt G: Neue Notiz automatisch auswählen
-  selectedNoteId = newNote.id;
-  renderNotes();
-  renderSelectedNote();
+  saveToLocalStorage();
+  renderNotesList();
 }
 
-// ============ 5. NOTIZ AUSWÄHLEN (KLICK AUF SIDEBAR) ============
-function selectNote(id) {
-  selectedNoteId = id;
-  renderNotes(); // Sidebar aktualisieren (markiert ausgewählte Notiz)
-  renderSelectedNote(); // Detailbereich anzeigen
-}
+// ============ 4. Sidebar neu rendern ============
+function renderNotesList() {
+  const list = document.getElementById("sidebarNotesList");
+  list.innerHTML = "";
 
-// ============ 6. SIDEBAR RENDERN ============
-function renderNotes() {
-  // Sidebar-Liste rendern
   if (notes.length === 0) {
-    sidebarNotesList.innerHTML =
-      '<p class="empty-message">Keine Notizen vorhanden</p>';
-  } else {
-    sidebarNotesList.innerHTML = notes
-      .map(
-        (note) => `
-        <div 
-          class="note-item ${selectedNoteId === note.id ? "active" : ""}" 
-          data-id="${note.id}"
-          onclick="selectNote(${note.id})"
-          style="cursor: pointer;"
-        >
-          <h4>${escapeHtml(note.title)}</h4>
-          <p class="note-preview">${escapeHtml(truncate(note.content, 50))}</p>
-          <p class="note-date">${note.createdAt}</p>
-          <button 
-            class="btn-delete" 
-            onclick="deleteNote(${note.id}, event)"
-            style="width: 100%; margin-top: 0.5rem;"
-          >
-            🗑️ Löschen
-          </button>
-        </div>
-      `
-      )
-      .join("");
-  }
-}
-
-// ============ 7. DETAILBEREICH RENDERN (AUSGEWÄHLTE NOTIZ) ============
-function renderSelectedNote() {
-  if (!selectedNoteId) {
-    selectedNoteDetail.style.display = "none";
+    list.innerHTML = `<p class="empty-message">Keine Notizen vorhanden</p>`;
     return;
   }
 
-  const note = notes.find((n) => n.id === selectedNoteId);
+  notes.forEach((note) => {
+    const item = document.createElement("div");
+    item.className = "note-item";
 
-  if (!note) {
-    selectedNoteDetail.style.display = "none";
+    const title = note.title;
+    console.log(title);
+
+    const PreviewTitle =
+      title.length > 20 ? title.substring(0, 20) + "..." : title;
+    console.log(title.length);
+
+    const PreviewContent =
+      note.content.length > 25
+        ? note.content.substring(0, 25) + "..."
+        : note.content;
+
+    item.innerHTML = `
+      <div class="note-title">${PreviewTitle}</div>
+      <div class="note-preview">${PreviewContent}</div>
+      <div class="note-date">${formatDate(note.createdAt)}</div>
+    `;
+
+    item.onclick = () => loadNote(note.id);
+    list.appendChild(item);
+  });
+}
+
+// ============ 5. Notiz laden ============
+function loadNote(id) {
+  const note = notes.find((n) => n.id === id);
+  activeNoteId = id;
+
+  noteTitle.value = note.title;
+  noteContent.value = note.content;
+}
+
+// ============ 6. Notiz löschen ============
+function DeleteNotes() {
+  if (!activeNoteId) {
+    alert("Keine Notiz ausgewählt ⚠️");
     return;
   }
 
-  selectedNoteDetail.style.display = "block";
-  selectedNoteContent.innerHTML = `
-    <div class="note-card">
-      <h2>${escapeHtml(note.title)}</h2>
-      <p class="note-date">📅 ${note.createdAt}</p>
-      <p class="note-text">${escapeHtml(note.content).replace(
-        /\n/g,
-        "<br>"
-      )}</p>
-      <button 
-        class="btn-edit" 
-        onclick="editNote(${note.id})"
-        style="margin-right: 0.5rem;"
-      >
-        ✏️ Bearbeiten
-      </button>
-      <button 
-        class="btn-delete" 
-        onclick="deleteNote(${note.id}, event)"
-      >
-        🗑️ Löschen
-      </button>
-    </div>
-  `;
+  notes = notes.filter((note) => note.id !== activeNoteId);
+  activeNoteId = null;
+
+  document.getElementById("noteTitle").value = "";
+  document.getElementById("noteContent").value = "";
+
+  saveToLocalStorage();
+  renderNotesList();
 }
 
-// ============ 8. NOTIZ LÖSCHEN ============
-function deleteNote(id, event) {
-  event.stopPropagation(); // Verhindert, dass Klick nach oben bubbled
-
-  // Sicherheitsabfrage
-  if (!confirm("Soll diese Notiz wirklich gelöscht werden?")) {
-    return;
-  }
-
-  // Notiz aus Array filtern (entfernen)
-  notes = notes.filter((note) => note.id !== id);
-
-  // localStorage aktualisieren
-  saveNotes();
-
-  // Wenn gelöschte Notiz ausgewählt war: Auswahl löschen
-  if (selectedNoteId === id) {
-    selectedNoteId = null;
-    selectedNoteDetail.style.display = "none";
-  }
-
-  // Anzeige aktualisieren
-  renderNotes();
-  renderSelectedNote();
-}
-
-// ============ 9. NOTIZ BEARBEITEN (STUB) ============
-function editNote(id) {
-  // Zum jetzt nur als Platzhalter — später kann man ein Modal hinzufügen
-  alert("Bearbeiten-Funktion noch nicht implementiert");
-  // Später: Modal öffnen, Felder füllen, speichern
-}
-
-// ============ 10. LOCALSTORAGE: SPEICHERN ============
-function saveNotes() {
-  // Array als JSON-String speichern
-  localStorage.setItem("myNotes", JSON.stringify(notes));
-  console.log("Notizen gespeichert:", notes);
-}
-
-// ============ 11. LOCALSTORAGE: LADEN ============
-function loadNotes() {
-  // Daten aus localStorage holen
-  const savedNotes = localStorage.getItem("myNotes");
-
-  // Wenn Daten vorhanden: parsen und laden
-  if (savedNotes) {
-    notes = JSON.parse(savedNotes);
-  } else {
-    notes = []; // Sonst leeres Array
-  }
-  console.log("Notizen geladen:", notes);
-}
-
-// ============ 12. HILFSFUNKTIONEN ============
-// Text abkürzen (z.B. "Das ist eine lange Not..." statt voller Text)
-function truncate(text, maxLength) {
-  if (text.length > maxLength) {
-    return text.slice(0, maxLength) + "...";
-  }
-  return text;
-}
-
-// HTML-Zeichen escapen (Sicherheit: verhindert HTML-Injection)
-function escapeHtml(text) {
-  const map = {
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#039;",
-  };
-  return text.replace(/[&<>"']/g, (char) => map[char]);
+// ============ 7. Lokalen Speicher verwalten ============
+function saveToLocalStorage() {
+  localStorage.setItem("notes", JSON.stringify(notes));
 }
