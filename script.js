@@ -75,6 +75,7 @@ function SaveNotes() {
 
   saveToLocalStorage();
   renderNotesList();
+  NewNote();
 }
 
 // ============ 4. Sidebar neu rendern ============
@@ -86,6 +87,8 @@ function renderNotesList() {
     list.innerHTML = `<p class="empty-message">Keine Notizen vorhanden</p>`;
     return;
   }
+
+  notes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
   notes.forEach((note) => {
     const item = document.createElement("div");
