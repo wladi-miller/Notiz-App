@@ -26,13 +26,13 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-function NewNote() {
+function newNote() {
   activeNoteId = null;
   document.getElementById("noteTitle").value = "";
   document.getElementById("noteContent").value = "";
 }
 
-function SaveNotes() {
+function saveNotes() {
   const title = document.getElementById("noteTitle").value.trim();
   const content = document.getElementById("noteContent").value.trim();
 
@@ -106,7 +106,7 @@ function loadNote(id) {
   noteContent.value = note.content;
 }
 
-function DeleteNotes() {
+function deleteNotes() {
   if (!activeNoteId) {
     alert("Keine Notiz ausgewählt ⚠️");
     return;
