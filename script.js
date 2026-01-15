@@ -1,8 +1,6 @@
-// ============ variablen Deklaration ============
 let notes = [];
 let activeNoteId = null;
 
-// ============ Hilfsfunktion Zeitstempel ============
 function formatDate(date) {
   return new Date(date).toLocaleString("de-DE", {
     day: "2-digit",
@@ -13,31 +11,27 @@ function formatDate(date) {
   });
 }
 
-// ============ 1. Notizen aus dem lokalen Speicher laden ============
 document.addEventListener("DOMContentLoaded", () => {
   const savedNotes = localStorage.getItem("notes");
 
   if (savedNotes) {
     const parsedNotes = JSON.parse(savedNotes);
 
-    // Prüfen, ob es ein Array ist
     if (Array.isArray(parsedNotes)) {
       notes = parsedNotes;
     } else {
-      notes = []; // falls es kein Array ist, leeres Array verwenden
+      notes = [];
     }
     renderNotesList();
   }
 });
 
-// ============ 2. Neue Notit erstellen ============
 function NewNote() {
   activeNoteId = null;
   document.getElementById("noteTitle").value = "";
   document.getElementById("noteContent").value = "";
 }
 
-// ============ 3. Notiz speichern ============
 function SaveNotes() {
   const title = document.getElementById("noteTitle").value.trim();
   const content = document.getElementById("noteContent").value.trim();
@@ -78,7 +72,6 @@ function SaveNotes() {
   NewNote();
 }
 
-// ============ 4. Sidebar neu rendern ============
 function renderNotesList() {
   const list = document.getElementById("sidebarNotesList");
   list.innerHTML = "";
@@ -94,15 +87,6 @@ function renderNotesList() {
     const item = document.createElement("div");
     item.className = "note-item";
 
-    const title = note.title;
-    console.log(title);
-
-    const previewTitle = title.length > 20 ? title.substring(0, 20) : title;
-    console.log(title.length);
-
-    const previewContent =
-      note.content.length > 25 ? note.content.substring(0, 25) : note.content;
-
     item.innerHTML = `
       <div class="note-title">${note.title}</div>
       <div class="note-preview">${note.content}</div>
@@ -114,7 +98,6 @@ function renderNotesList() {
   });
 }
 
-// ============ 5. Notiz laden ============
 function loadNote(id) {
   const note = notes.find((n) => n.id === id);
   activeNoteId = id;
@@ -123,7 +106,6 @@ function loadNote(id) {
   noteContent.value = note.content;
 }
 
-// ============ 6. Notiz löschen ============
 function DeleteNotes() {
   if (!activeNoteId) {
     alert("Keine Notiz ausgewählt ⚠️");
@@ -140,7 +122,6 @@ function DeleteNotes() {
   renderNotesList();
 }
 
-// ============ 7. Lokalen Speicher verwalten ============
 function saveToLocalStorage() {
   localStorage.setItem("notes", JSON.stringify(notes));
 }
