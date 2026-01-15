@@ -97,18 +97,15 @@ function renderNotesList() {
     const title = note.title;
     console.log(title);
 
-    const PreviewTitle =
-      title.length > 20 ? title.substring(0, 20) + "..." : title;
+    const previewTitle = title.length > 20 ? title.substring(0, 20) : title;
     console.log(title.length);
 
-    const PreviewContent =
-      note.content.length > 25
-        ? note.content.substring(0, 25) + "..."
-        : note.content;
+    const previewContent =
+      note.content.length > 25 ? note.content.substring(0, 25) : note.content;
 
     item.innerHTML = `
-      <div class="note-title">${PreviewTitle}</div>
-      <div class="note-preview">${PreviewContent}</div>
+      <div class="note-title">${note.title}</div>
+      <div class="note-preview">${note.content}</div>
       <div class="note-date">${formatDate(note.createdAt)}</div>
     `;
 

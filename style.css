@@ -25,7 +25,6 @@ body {
   overflow: hidden;
 }
 
-/* Sidebar */
 .sidebar {
   margin: 10px;
   width: var(--sidebar-width);
@@ -37,7 +36,6 @@ body {
   box-shadow: 0 0 10px rgba(12, 20, 40, 0.1);
 }
 
-/* Sidebar header */
 .sidebar-header {
   padding: 0.4rem;
   display: flex;
@@ -59,7 +57,6 @@ body {
   width: 100%;
 }
 
-/* Sidebar notes list */
 .notes-list {
   padding: 0.75rem;
   overflow-y: auto;
@@ -80,29 +77,35 @@ body {
 .note-title {
   font-size: 1.25rem;
   font-weight: 700;
-  word-break: break-word;
 }
 .note-preview {
   font-size: 1rem;
   color: #555;
+}
+.note-title,
+.note-preview {
   word-break: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 160px;
 }
 .note-date {
   font-size: 0.75em;
   color: #999;
   margin-top: 4px;
+  text-align: right;
 }
 
-/* Container for note content */
 .container {
   flex: 1;
   background: white;
   margin: 10px;
   padding: 15px;
   border-radius: 8px;
-  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
-  overflow-y: auto;
-  max-height: calc(100vh - 40px);
+  /* box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1); */
+  /*   overflow-y: auto; */
+  max-height: calc(100vh - 20px);
 }
 
 .input-group {
@@ -119,8 +122,11 @@ body {
   margin-right: 10px;
   font-size: 2em;
   padding: 12px 15px;
-  border: none;
   width: 60%;
+  border: none;
+  outline: none;
+  resize: none;
+  background: transparent;
 }
 
 .btn {
@@ -152,13 +158,13 @@ body {
 
 .note-content {
   width: 100%;
-  height: 300px;
+  height: 90%;
   padding: 15px;
+  font-size: 1.2em;
   border: none;
-  font-size: 1em;
-  resize: vertical;
-  box-sizing: border-box;
-  border-radius: 6px;
+  outline: none;
+  resize: none;
+  background: transparent;
 }
 
 /* Responsive für kleine Bildschirme */
