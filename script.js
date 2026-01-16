@@ -11,6 +11,20 @@ function formatDate(date) {
   });
 }
 
+function getNextId() {
+  return notes.length + 1;
+}
+
+function normalizeIds() {
+  notes.forEach((note, index) => {
+    note.id = index + 1;
+  });
+}
+
+function sortNotesByDate() {
+  notes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   const savedNotes = localStorage.getItem("notes");
 
@@ -22,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       notes = [];
     }
+    sortNotesByDate();
     renderNotesList();
   }
 });
@@ -58,7 +73,7 @@ function saveNotes() {
     note.content = content;
   } else {
     const newNote = {
-      id: Date.now(),
+      id: getNextId(),
       title,
       content,
       createdAt: new Date(),
@@ -67,6 +82,7 @@ function saveNotes() {
     activeNoteId = newNote.id;
   }
 
+  sortNotesByDate();
   saveToLocalStorage();
   renderNotesList();
   NewNote();
@@ -113,11 +129,14 @@ function deleteNotes() {
   }
 
   notes = notes.filter((note) => note.id !== activeNoteId);
+  normalizeIds();
+
   activeNoteId = null;
 
   document.getElementById("noteTitle").value = "";
   document.getElementById("noteContent").value = "";
 
+  sortNotesByDate();
   saveToLocalStorage();
   renderNotesList();
 }
