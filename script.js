@@ -21,8 +21,8 @@ function normalizeIds() {
   });
 }
 
-function sortNotesByDate() {
-  notes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+function sortNotesByID() {
+  notes.sort((a, b) => new Date(b.id) - new Date(a.id));
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       notes = [];
     }
-    sortNotesByDate();
+    sortNotesByID();
     renderNotesList();
   }
 });
@@ -82,10 +82,10 @@ function saveNotes() {
     activeNoteId = newNote.id;
   }
 
-  sortNotesByDate();
+  sortNotesByID();
   saveToLocalStorage();
   renderNotesList();
-  NewNote();
+  newNote();
 }
 
 function renderNotesList() {
@@ -97,7 +97,7 @@ function renderNotesList() {
     return;
   }
 
-  notes.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  notes.sort((a, b) => new Date(b.id) - new Date(a.id));
 
   notes.forEach((note) => {
     const item = document.createElement("div");
@@ -136,7 +136,7 @@ function deleteNotes() {
   document.getElementById("noteTitle").value = "";
   document.getElementById("noteContent").value = "";
 
-  sortNotesByDate();
+  sortNotesByID();
   saveToLocalStorage();
   renderNotesList();
 }
