@@ -165,7 +165,6 @@ body {
   background: transparent;
 }
 
-/* Responsive für kleine Bildschirme */
 @media (max-width: 600px) {
   .app-container {
     flex-direction: column;
