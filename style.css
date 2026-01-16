@@ -169,14 +169,14 @@ body {
 @media (max-width: 600px) {
   .app-container {
     flex-direction: column;
-    height: auto;
+    height: 80vh;
   }
 
   .sidebar {
     width: auto;
     min-width: auto;
     margin: 10px 10px 5px 10px;
-    max-height: 200px;
+    max-height: 700px;
     overflow-y: auto;
     border-radius: 8px;
   }
