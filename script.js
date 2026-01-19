@@ -1,6 +1,15 @@
 let notes = [];
 let activeNoteId = null;
 
+function escapeHTML(str) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#x27;");
+}
+
 function formatDate(date) {
   return new Date(date).toLocaleString("de-DE", {
     day: "2-digit",
@@ -105,8 +114,8 @@ function renderNotesList() {
     item.className = "note-item";
 
     item.innerHTML = `
-      <div class="note-title">${note.title}</div>
-      <div class="note-preview">${note.content}</div>
+      <div class="note-title">${escapeHTML(note.title)}</div>
+      <div class="note-preview">${escapeHTML(note.content)}</div>
       <div class="note-date">${formatDate(note.createdAt)}</div>
     `;
 
